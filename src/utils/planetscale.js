@@ -36,10 +36,10 @@ export async function getNetworkStats() {
   try {
     const contracts_count = (await getContracts()).length
 
-    const txs_count = (await conn.execute(
-        `SELECT * FROM function_transactions`,
+    const txs_count = Number((await conn.execute(
+        `SELECT COUNT(*) FROM function_transactions;`,
         [1],
-      ))?.rows.length;
+      ))?.rows[0]["count(*)"]);
 
     return { contracts_count, txs_count };
   } catch (error) {
