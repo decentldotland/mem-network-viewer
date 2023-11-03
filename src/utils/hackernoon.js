@@ -7,12 +7,12 @@ export async function resolveHackernoonSig(sig) {
     );
     for (const tx of contractTxs) {
       const inputs = JSON.parse(tx.input);
-      if (inputs.sig === sig) {
+
+      if (inputs.sig.toLowerCase() === sig.toLowerCase()) {
         return { txid: tx.pseudo_id };
       }
-
-      return { txid: null };
     }
+    return { txid: null };
   } catch (error) {
     console.log(error);
   }
