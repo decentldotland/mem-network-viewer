@@ -1,7 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { getContracts, getNetworkStats, getAllTransactions, getTransactionsByContract } from "./utils/planetscale.js";
+import {
+  getContracts,
+  getNetworkStats,
+  getAllTransactions,
+  getTransactionsByContract,
+  getWeekTxs,
+} from "./utils/planetscale.js";
 import { resolveHackernoonSig } from "./utils/hackernoon.js";
 const app = express();
 const port = process.env.PORT || 3000;
@@ -69,6 +75,16 @@ app.get("/txs/:limit/:type", async (req, res) => {
   }
 });
 
+app.get("/txs/week", async (req, res) => {
+  try {
+    const data = await getWeekTxs();
+
+    res.send(data);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 app.get("/hackernoon/:sig", async (req, res) => {
   try {
     const { sig } = req.params;
@@ -79,7 +95,5 @@ app.get("/hackernoon/:sig", async (req, res) => {
     console.log(error);
   }
 });
-
-
 
 app.listen(port, () => console.log("Server started"));
