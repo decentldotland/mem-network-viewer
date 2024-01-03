@@ -15,7 +15,6 @@ const conn = connect(config);
 
 export async function getContracts() {
   try {
-
     const results = await conn.execute(
       "SELECT * FROM function_latest_cycles;",
       [1],
@@ -34,12 +33,12 @@ export async function getContracts() {
 
 export async function getNetworkStats() {
   try {
-    const contracts_count = (await getContracts()).length
+    const contracts_count = (await getContracts()).length;
 
-    const txs_count = Number((await conn.execute(
-        `SELECT COUNT(*) FROM function_transactions;`,
-        [1],
-      ))?.rows[0]["count(*)"]);
+    const txs_count = Number(
+      (await conn.execute(`SELECT COUNT(*) FROM function_transactions;`, [1]))
+        ?.rows[0]["count(*)"],
+    );
 
     return { contracts_count, txs_count };
   } catch (error) {
@@ -91,4 +90,27 @@ function digestTxsRes(res) {
     delete tx.created_by;
   }
   return res;
+}
+
+export const PAST_WEEK_TX_VOLUME = `
+SELECT *
+FROM function_transactions
+WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY);
+`;
+
+export async function getWeekTxs() {
+  try {
+    const results = await conn.execute(
+      `
+SELECT *
+FROM function_transactions
+WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY);
+`,
+      [1],
+    );
+    const res = digestTxsRes(results.rows);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
 }
