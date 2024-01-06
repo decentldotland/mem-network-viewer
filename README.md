@@ -23,6 +23,7 @@ npm install && npm run start
 - `GET /contract/txs/:id` : return contract's transaction (`id` : contract id)
 - `GET /txs/:limit/:type` : return network's transactions for a given count `limit` and sorting `type`  (`asc` or `desc`)
 - `GET /txs/week` : return last 7 days TXs
+- `GET /tx/:id` : return the object of a supplied MEM pseudo_id (TXID)
 
 ## License
 This project is licensed under the [MIT License](./LICENSE)

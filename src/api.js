@@ -7,6 +7,7 @@ import {
   getAllTransactions,
   getTransactionsByContract,
   getWeekTxs,
+  getByPseudoId,
 } from "./utils/planetscale.js";
 import { resolveHackernoonSig } from "./utils/hackernoon.js";
 const app = express();
@@ -78,6 +79,16 @@ app.get("/txs/:limit/:type", async (req, res) => {
 app.get("/txs/week", async (req, res) => {
   try {
     const data = await getWeekTxs();
+
+    res.send(data);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.get("/tx/:id", async (req, res) => {
+  try {
+    const data = await getByPseudoId(req.params.id);
 
     res.send(data);
   } catch (error) {
