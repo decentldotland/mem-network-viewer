@@ -114,3 +114,19 @@ WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY);
     console.log(error);
   }
 }
+
+export async function getByPseudoId(id) {
+  try {
+    const results = await conn.execute(
+      `
+SELECT *
+FROM function_transactions WHERE pseudo_id = '${id}'
+`,
+      [1],
+    );
+    const res = digestTxsRes(results.rows);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
