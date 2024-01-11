@@ -1,6 +1,6 @@
 {
   "name": "mem-network-viewer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Molecular Execution Machine (MEM) network inspector",
   "main": "./src/api.js",
   "type": "module",

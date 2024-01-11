@@ -115,6 +115,23 @@ WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY);
   }
 }
 
+export async function getDaysTxs(days) {
+  try {
+    const results = await conn.execute(
+      `
+SELECT *
+FROM function_transactions
+WHERE created_at >= DATE_SUB(NOW(), INTERVAL ${Number(days)} DAY);
+`,
+      [1],
+    );
+    const res = digestTxsRes(results.rows);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getByPseudoId(id) {
   try {
     const results = await conn.execute(
